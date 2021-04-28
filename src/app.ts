@@ -9,9 +9,7 @@ APP.use(express.json());
 APP.use(express.static(__dirname + '/public'));
 
 APP.get('/api/v1/contacts', (req, res) => {
-  setTimeout(() => {
-    res.json(contactsModels);
-  }, 2000);
+  res.json(contactsModels);
 });
 
 APP.post('/api/v1/contacts', (req, res) => {
