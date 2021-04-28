@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+
 import { models as contactsModels } from './generate-contacts';
 
 export const APP = express();
