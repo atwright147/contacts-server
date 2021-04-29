@@ -16,7 +16,7 @@ APP.get('/api/v1/contacts', (req, res) => {
 });
 
 APP.post('/api/v1/contacts', (req, res) => {
-  res.status(200);
+  res.sendStatus(200);
 });
 
 APP.get('/api/v1/contacts/:id', (req, res) => {
