@@ -20,7 +20,7 @@ export interface IContact {
   comments: string[],
 }
 
-const QUANTITY = 5;
+const QUANTITY = process.env.QUANTITY ?? 5;
 
 faker.seed(1234567);
 faker.locale = 'en_GB';
