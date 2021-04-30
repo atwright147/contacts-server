@@ -1,4 +1,7 @@
 import faker from 'faker';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export interface IContactAddress {
   address1: string,
