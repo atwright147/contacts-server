@@ -15,6 +15,14 @@ APP.get('/api/v1/contacts', (req, res) => {
   res.json(contactsModels);
 });
 
+APP.put('/api/v1/contacts', (req, res) => {
+  res.sendStatus(200);
+});
+
+APP.patch('/api/v1/contacts', (req, res) => {
+  res.sendStatus(200);
+});
+
 APP.post('/api/v1/contacts', (req, res) => {
   res.sendStatus(200);
 });
