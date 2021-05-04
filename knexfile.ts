@@ -4,14 +4,22 @@
 require('ts-node/register');
 
 import path from 'path';
+import { Knex } from 'knex';
 
-module.exports = {
+const dbFolder = path.join(__dirname, 'db');
 
+const knexConfig: Record<string, Knex.Config> = {
   development: {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: path.join(__dirname, 'dev.sqlite3'),
+      filename: path.join(dbFolder, 'dev.sqlite3'),
+    },
+    migrations: {
+      directory: path.join(dbFolder, 'migrations'),
+    },
+    seeds: {
+      directory: path.join(dbFolder, 'seeds'),
     }
   },
 
@@ -46,5 +54,6 @@ module.exports = {
       tableName: 'knex_migrations'
     }
   }
-
 };
+
+export default knexConfig;
