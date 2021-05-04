@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const faker = require('faker');
-const dotenv = require('dotenv');
+import faker from 'faker';
+import dotenv from 'dotenv';
+import { Knex } from 'knex';
 
 dotenv.config();
 
@@ -11,7 +12,7 @@ faker.locale = 'en_GB';
 const TABLE_NAME = 'contacts';
 const QUANTITY = process.env.QUANTITY ?? 10;
 
-exports.seed = (knex) => {
+exports.seed = (knex: Knex) => {
   // Deletes ALL existing entries
   return knex(TABLE_NAME).truncate()
     .then(() => {

@@ -1,12 +1,17 @@
 // Update with your config settings.
 
+// https://gist.github.com/tukkajukka/9893e5f111862d06044b73fa944a8741
+require('ts-node/register');
+
+import path from 'path';
+
 module.exports = {
 
   development: {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: './dev.sqlite3'
+      filename: path.join(__dirname, 'dev.sqlite3'),
     }
   },
 
