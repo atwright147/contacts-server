@@ -16,7 +16,7 @@ process.on('unhandledRejection', (error) => {
 });
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const knexOptions = require('../knexfile');
+const knexOptions = require('../knexfile').default;
 
 const knex = Knex(knexOptions[ENV]);
 Model.knex(knex);
