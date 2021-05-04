@@ -5,6 +5,9 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+faker.seed(1234567);
+faker.locale = 'en_GB';
+
 const TABLE_NAME = 'comments';
 const QUANTITY = process.env.QUANTITY ?? 10;
 
