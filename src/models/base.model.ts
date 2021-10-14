@@ -1,20 +1,20 @@
 import { Model } from 'objection';
 
 export class BaseModel extends Model {
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 
   constructor() {
     super();
-    this.created_at = '';
-    this.updated_at = '';
+    this.createdAt = '';
+    this.updatedAt = '';
   }
 
   $beforeInsert(): void {
-    this.created_at = new Date().toISOString();
+    this.createdAt = new Date().toISOString();
   }
 
   $beforeUpdate(): void {
-    this.updated_at = new Date().toISOString();
+    this.updatedAt = new Date().toISOString();
   }
 }

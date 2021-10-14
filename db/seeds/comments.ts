@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 import faker from 'faker';
 import dotenv from 'dotenv';
 import { Knex } from 'knex';
@@ -12,20 +10,20 @@ faker.locale = 'en_GB';
 const TABLE_NAME = 'comments';
 const QUANTITY = process.env.QUANTITY ?? 10;
 
-exports.seed = (knex: Knex) => {
+export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
-  return knex(TABLE_NAME).truncate()
-    .then(() => {
-      const seedData = [];
-      for (let index = 1; index <= QUANTITY; index++) {
-        seedData.push({
-          contact_id: index,
-          comment: faker.lorem.sentences(2),
-          created_at: knex.fn.now(),
-          updated_at: knex.fn.now(),
-        });
-      }
-      // Inserts seed entries
-      return knex(TABLE_NAME).insert(seedData);
+  await knex(TABLE_NAME).del();
+
+  const seedData = [];
+  for (let index = 1; index <= QUANTITY; index++) {
+    seedData.push({
+      contactId: index,
+      comment: faker.lorem.sentences(2),
+      createdAt: knex.fn.now(),
+      updatedAt: knex.fn.now(),
     });
-};
+  }
+
+  // Inserts seed entries
+  await knex(TABLE_NAME).insert(seedData);
+}

@@ -10,7 +10,7 @@ export class Comments extends BaseModel {
       modelClass: __dirname + '/contacts.model',
       relation: Model.HasOneRelation,
       join: {
-        from: 'comments.contact_id',
+        from: 'comments.contactId',
         to: 'comments.id'
       }
     },

@@ -1,34 +1,34 @@
 import faker from 'faker';
 import dotenv from 'dotenv';
 import { Knex } from 'knex';
+import bcrypt from 'bcrypt';
 
 dotenv.config();
 
 faker.seed(1234567);
 faker.locale = 'en_GB';
 
-const TABLE_NAME = 'contacts';
-const QUANTITY = process.env.QUANTITY_CONTACTS ?? 10;
+const TABLE_NAME = 'users';
+const QUANTITY = 3;
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
   await knex(TABLE_NAME).del();
 
+  const SALT = await bcrypt.genSalt(10);
+  const PASSWORD = await bcrypt.hash(process.env.SEED_PASSWORD as string, SALT);
   const seedData = [];
   for (let index = 1; index <= QUANTITY; index++) {
     const FIRST_NAME = faker.name.firstName();
     const LAST_NAME = faker.name.lastName();
 
-    const now = new Date();
-    now.setFullYear(now.getFullYear() - 20);
-
     seedData.push({
-      uuid: faker.datatype.uuid(),
+      contactId: index,
       firstName: FIRST_NAME,
       lastName: LAST_NAME,
       email: faker.internet.exampleEmail(FIRST_NAME, LAST_NAME),
-      dateOfBirth: faker.date.past(65, now).toISOString().split('T')[0],
-      ownerId: faker.datatype.number({ min: 1, max: 3 }),
+      password: PASSWORD,
+      active: true,
       createdAt: knex.fn.now(),
       updatedAt: knex.fn.now(),
     });

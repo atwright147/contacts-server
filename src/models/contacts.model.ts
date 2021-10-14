@@ -11,7 +11,7 @@ export class Contacts extends BaseModel {
       relation: Model.HasManyRelation,
       join: {
         from: 'contacts.id',
-        to: 'comments.contact_id'
+        to: 'comments.contactId'
       }
     },
     addresses: {
@@ -19,7 +19,7 @@ export class Contacts extends BaseModel {
       relation: Model.HasManyRelation,
       join: {
         from: 'contacts.id',
-        to: 'addresses.contact_id'
+        to: 'addresses.contactId'
       }
     },
   };
