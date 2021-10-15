@@ -4,6 +4,7 @@ import cors from 'cors';
 import Knex from 'knex';
 import { Model } from 'objection';
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 
 import { delay } from './middleware/delay';
 
@@ -22,6 +23,8 @@ const knex = Knex(knexOptions[ENV]);
 Model.knex(knex);
 
 import { Contacts } from './models/contacts.model';
+import { Users } from './models/users.model';
+import { generateToken } from './utils/jwt/jwt';
 
 export const APP = express();
 
@@ -83,3 +86,29 @@ APP.delete('/api/v1/contacts/:id', async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+APP.post('/api/v1/auth/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await Users.query().findOne({ email });
+    const isValidPassword = await bcrypt.compare(password, user.password);
+
+    isValidPassword
+      ? res.status(200).json({ token: generateToken(user) })
+      : res.sendStatus(403);
+  } catch (err) {
+    console.info(err);
+    res.sendStatus(500);
+  }
+});
+
+// APP.post('/api/v1/auth/logout', async (req, res) => {
+//   try {
+//     // const result = await Users.query().insert(req.body);
+//     // res.json({ result });
+//   } catch (err) {
+//     console.info(err);
+//     res.sendStatus(500);
+//   }
+// });
