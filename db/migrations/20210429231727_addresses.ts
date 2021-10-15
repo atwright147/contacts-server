@@ -17,7 +17,7 @@ export async function up(knex: Knex): Promise<void> {
       table.string('postCode');
       table.timestamp('createdAt');
       table.timestamp('updatedAt');
-      });
+    });
   }
 }
 

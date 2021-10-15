@@ -1,8 +1,10 @@
 import { Model } from 'objection';
+import { Base } from '../types/base.interface';
 
-export class BaseModel extends Model {
-  createdAt: string;
-  updatedAt: string;
+export class BaseModel extends Model implements Base {
+  id;
+  createdAt;
+  updatedAt;
 
   constructor() {
     super();

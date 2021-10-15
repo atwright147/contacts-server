@@ -1,8 +1,16 @@
 import { Model } from 'objection';
 
 import { BaseModel } from './base.model'
+import { UserModel } from '../types/user.interface';
 
-export class Users extends BaseModel {
+export class Users extends BaseModel implements UserModel {
+  contactId;
+  firstName;
+  lastName;
+  email;
+  password;
+  active;
+
   static tableName = 'users';
 
   static relationMappings = {

@@ -3,14 +3,16 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-import { IContact } from './interfaces/contact.interface';
+import { Contact, ContactModel } from './types/contact.interface';
+import { Address } from './types/address.interface';
 
 const QUANTITY = process.env.QUANTITY ?? 5;
 
 faker.seed(1234567);
 faker.locale = 'en_GB';
 
-const genAddress = () => ({
+const genAddress = (contactId: number): Address => ({
+  contactId,
   address1: faker.address.streetAddress(),
   address2: faker.address.streetAddress(),
   address3: faker.address.streetAddress(),
@@ -19,16 +21,16 @@ const genAddress = () => ({
   postCode: faker.address.zipCode(),
 });
 
-const models: IContact[] = [];
+const models: Omit<Contact, 'createdAt' | 'updatedAt'>[] = [];
 
-for (let modelIndex = 0; modelIndex < QUANTITY; modelIndex++) {
+for (let modelIndex = 1; modelIndex < QUANTITY; modelIndex++) {
   const comment1 = faker.lorem.sentences(2);
   const comment2 = faker.lorem.sentences(2);
 
-  const address1 = genAddress();
-  const address2 = genAddress();
+  const address1 = genAddress(modelIndex);
+  const address2 = genAddress(modelIndex);
 
-  const model = {
+  const model: Omit<ContactModel, 'createdAt' | 'updatedAt'> = {
     id: modelIndex + 1,
     uuid: faker.datatype.uuid(),
     firstName: faker.name.findName().split(' ')[0],
