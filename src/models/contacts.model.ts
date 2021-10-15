@@ -1,8 +1,17 @@
 import { Model } from 'objection';
 
+import { ContactModel } from '../types/contact.interface';
 import { BaseModel } from './base.model'
 
-export class Contacts extends BaseModel {
+export class Contacts extends BaseModel implements ContactModel {
+  uuid;
+  firstName;
+  lastName;
+  email;
+  dateOfBirth;
+  addresses;
+  comments;
+
   static tableName = 'contacts';
 
   static relationMappings = {

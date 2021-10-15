@@ -1,8 +1,17 @@
 import { Model } from 'objection';
 
 import { BaseModel } from './base.model';
+import { AddressModel } from '../types/address.interface';
 
-export class Comments extends BaseModel {
+export class Comments extends BaseModel implements AddressModel {
+  contactId;
+  address1;
+  address2;
+  address3;
+  city;
+  county;
+  postCode;
+
   static tableName = 'addresses';
 
   static relationMappings = {
