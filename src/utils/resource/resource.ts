@@ -1,18 +1,20 @@
+export const defaultPropsToHide: string[] = [
+  'id',
+  'password',
+  'createdAt',
+  'updatedAt',
+];
+
 export class Resource<T> {
   private resource: T;
   private safeResource: Partial<T>;
-  private readonly defaultPropsToHide: string[] = [
-    'id',
-    'createdAt',
-    'updatedAt',
-  ];
 
   constructor(resource: T) {
     this.resource = resource;
     this.safeResource = {};
   }
 
-  safe(propsToHide: string[] = this.defaultPropsToHide): Partial<T> {
+  safe(propsToHide: string[] = defaultPropsToHide): Partial<T> {
     if (!Array.isArray(propsToHide)) {
       throw new Error('Invalid arg, should be an array');
     }
