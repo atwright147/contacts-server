@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import faker from 'faker';
 import dotenv from 'dotenv';
 import { Knex } from 'knex';
+import { AddressModel } from '../../src/types/address.interface';
 
 dotenv.config();
 
@@ -14,7 +17,7 @@ export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
   await knex(TABLE_NAME).del();
 
-  const seedData = [];
+  const seedData: Omit<AddressModel, 'id'>[] = [];
   for (let index = 1; index <= QUANTITY; index++) {
     seedData.push({
       contactId: index,
@@ -24,8 +27,8 @@ export async function seed(knex: Knex): Promise<void> {
       city: faker.address.city(),
       county: faker.address.county(),
       postCode: faker.address.zipCode(),
-      createdAt: knex.fn.now(),
-      updatedAt: knex.fn.now(),
+      createdAt: knex.fn.now() as any,
+      updatedAt: knex.fn.now() as any,
     });
   }
 

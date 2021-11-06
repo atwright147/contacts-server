@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import faker from 'faker';
 import dotenv from 'dotenv';
 import { Knex } from 'knex';
 import bcrypt from 'bcrypt';
+import { UserModel } from '../../src/types/user.interface';
 
 dotenv.config();
 
@@ -17,20 +20,21 @@ export async function seed(knex: Knex): Promise<void> {
 
   const SALT = await bcrypt.genSalt(10);
   const PASSWORD = await bcrypt.hash(process.env.SEED_PASSWORD as string, SALT);
-  const seedData = [];
+  const seedData: Omit<UserModel, ''>[] = [];
   for (let index = 1; index <= QUANTITY; index++) {
     const FIRST_NAME = faker.name.firstName();
     const LAST_NAME = faker.name.lastName();
 
     seedData.push({
+      id: index,
       contactId: index,
       firstName: FIRST_NAME,
       lastName: LAST_NAME,
       email: faker.internet.exampleEmail(FIRST_NAME, LAST_NAME),
       password: PASSWORD,
-      active: true,
-      createdAt: knex.fn.now(),
-      updatedAt: knex.fn.now(),
+      active: 1,
+      createdAt: knex.fn.now() as any,
+      updatedAt: knex.fn.now() as any,
     });
   }
 

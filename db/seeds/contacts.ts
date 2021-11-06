@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import faker from 'faker';
 import dotenv from 'dotenv';
 import { Knex } from 'knex';
+import { ContactModel } from '../../src/types/contact.interface';
 
 dotenv.config();
 
@@ -14,7 +17,7 @@ export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
   await knex(TABLE_NAME).del();
 
-  const seedData = [];
+  const seedData: Omit<ContactModel, 'addresses' | 'comments' | 'id'>[] = [];
   for (let index = 1; index <= QUANTITY; index++) {
     const FIRST_NAME = faker.name.firstName();
     const LAST_NAME = faker.name.lastName();
@@ -29,8 +32,8 @@ export async function seed(knex: Knex): Promise<void> {
       email: faker.internet.exampleEmail(FIRST_NAME, LAST_NAME),
       dateOfBirth: faker.date.past(65, now).toISOString().split('T')[0],
       ownerId: faker.datatype.number({ min: 1, max: 3 }),
-      createdAt: knex.fn.now(),
-      updatedAt: knex.fn.now(),
+      createdAt: knex.fn.now() as any,
+      updatedAt: knex.fn.now() as any,
     });
   }
 

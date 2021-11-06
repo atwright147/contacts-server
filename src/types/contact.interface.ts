@@ -6,9 +6,10 @@ export interface Contact {
   firstName: string,
   lastName: string,
   email: string,
-  dateOfBirth: Date,
+  dateOfBirth: string | Date,
   addresses: Address[],
   comments: string[],
+  ownerId: number,
 }
 
 export interface ContactModel extends Contact, Base {}

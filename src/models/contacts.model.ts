@@ -11,6 +11,7 @@ export class Contacts extends BaseModel implements ContactModel {
   dateOfBirth;
   addresses;
   comments;
+  ownerId;
 
   static tableName = 'contacts';
 
