@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
-import { User } from '../../types/user.interface';
+export type TokenPayload = Record<string, unknown>;
 
-export const generateToken = (data: User): string => {
-  return jwt.sign({ data }, process.env.SECRET as jwt.Secret, { expiresIn: '24h' });
+export const generateToken = (payload: TokenPayload, expiresIn = '2h'): string => {
+  return jwt.sign({ ...payload }, process.env.SECRET as jwt.Secret, { expiresIn });
 }
