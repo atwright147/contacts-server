@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
 
-const TABLE_NAME = 'contacts';
+const TABLE_NAME = 'emails';
 
 export async function up(knex: Knex): Promise<void> {
   const exists = await knex.schema.hasTable(TABLE_NAME);
@@ -8,13 +8,9 @@ export async function up(knex: Knex): Promise<void> {
   if (!exists) {
     return knex.schema.createTable(TABLE_NAME, (table) => {
       table.increments();
-      table.string('uuid');
-      table.string('firstName');
-      table.string('lastName');
+      table.integer('contactId');
       table.string('email');
-      table.string('bio');
-      table.dateTime('dateOfBirth');
-      table.integer('ownerId');
+      table.integer('isPrimary');
       table.timestamp('createdAt');
       table.timestamp('updatedAt');
     });

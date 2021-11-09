@@ -11,6 +11,7 @@ export class Comments extends BaseModel implements AddressModel {
   city;
   county;
   postCode;
+  isPrimary;
 
   static tableName = 'addresses';
 

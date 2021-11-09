@@ -15,6 +15,7 @@ export async function up(knex: Knex): Promise<void> {
       table.string('city');
       table.string('county');
       table.string('postCode');
+      table.integer('isPrimary');
       table.timestamp('createdAt');
       table.timestamp('updatedAt');
     });

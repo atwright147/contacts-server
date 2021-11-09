@@ -19,6 +19,7 @@ const genAddress = (contactId: number): Address => ({
   city: faker.address.city(),
   county: faker.address.county(),
   postCode: faker.address.zipCode(),
+  isPrimary: faker.datatype.boolean() ? 1 : 0,
 });
 
 const models: Omit<Contact, 'createdAt' | 'updatedAt'>[] = [];
@@ -31,7 +32,7 @@ for (let modelIndex = 1; modelIndex < QUANTITY; modelIndex++) {
   const address2 = genAddress(modelIndex);
 
   const model: Omit<ContactModel, 'createdAt' | 'updatedAt'> = {
-    id: modelIndex + 1,
+    id: modelIndex,
     uuid: faker.datatype.uuid(),
     firstName: faker.name.findName().split(' ')[0],
     lastName: faker.name.lastName(),
@@ -39,6 +40,7 @@ for (let modelIndex = 1; modelIndex < QUANTITY; modelIndex++) {
     dateOfBirth: faker.date.past(faker.datatype.number(40) + 20),
     addresses: [address1, address2],
     comments: [comment1, comment2],
+    ownerId: modelIndex,
   }
 
   models.push(model);

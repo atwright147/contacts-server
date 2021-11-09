@@ -1,6 +1,5 @@
 import { Base } from './base.interface';
-
-export type binary = 0 | 1;
+import { binary } from './binary.type';
 
 export interface User extends Base {
   contactId: number,

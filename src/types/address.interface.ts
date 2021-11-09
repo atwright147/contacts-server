@@ -1,4 +1,5 @@
 import { Base } from './base.interface';
+import { binary } from './binary.type';
 
 export interface Address {
   contactId: number,
@@ -8,6 +9,7 @@ export interface Address {
   city: string,
   county: string,
   postCode: string,
+  isPrimary: binary;
 }
 
 export interface AddressModel extends Address, Base {}
