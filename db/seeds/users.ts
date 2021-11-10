@@ -20,13 +20,28 @@ export async function seed(knex: Knex): Promise<void> {
 
   const SALT = await bcrypt.genSalt(10);
   const PASSWORD = await bcrypt.hash(process.env.SEED_PASSWORD as string, SALT);
-  const seedData: Omit<UserModel, ''>[] = [];
-  for (let index = 1; index <= QUANTITY; index++) {
+
+  const seedData: Omit<UserModel, 'id'>[] = [];
+
+  const defaultUser: Omit<UserModel, 'id'> = {
+    contactId: 1,
+    firstName: 'Admin',
+    lastName: 'Istrator',
+    email: 'admin@example.com',
+    password: PASSWORD,
+    active: 1,
+    createdAt: knex.fn.now() as any,
+    updatedAt: knex.fn.now() as any,
+  }
+
+  seedData.push(defaultUser);
+
+  for (let index = 2; index <= QUANTITY; index++) {
     const FIRST_NAME = faker.name.firstName();
     const LAST_NAME = faker.name.lastName();
 
     seedData.push({
-      id: index,
+      // id: index,
       contactId: index,
       firstName: FIRST_NAME,
       lastName: LAST_NAME,
