@@ -22,7 +22,7 @@ faker.locale = 'en_GB';
 
 const QUANTITY = process.env.QUANTITY_CONTACTS ?? 10;
 
-export async function seed(): Promise<void> {
+(async (): Promise<void> => {
   for (let index = 1; index <= QUANTITY; index++) {
     const avatarUrl = faker.image.avatar();
     const downloadStream = got.stream(avatarUrl);
@@ -40,4 +40,4 @@ export async function seed(): Promise<void> {
       console.error(`Something went wrong. ${(error as Error).message}`);
     }
   }
-}
+})();

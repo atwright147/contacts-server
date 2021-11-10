@@ -10,6 +10,7 @@
     "db:up": "npm run knex migrate:latest && npm run knex seed:run",
     "db:down": "./scripts/destroy-db.js",
     "db:refresh": "npm run db:down && npm run db:up",
+    "avatars": "ts-node ./scripts/get-avatars.ts",
     "lint": "eslint . --ext .ts",
     "test": "jest"
   },
