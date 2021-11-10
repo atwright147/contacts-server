@@ -11,7 +11,6 @@ export async function up(knex: Knex): Promise<void> {
       table.string('uuid');
       table.string('firstName');
       table.string('lastName');
-      table.string('email');
       table.string('bio');
       table.dateTime('dateOfBirth');
       table.integer('ownerId');

@@ -46,7 +46,7 @@ APP.get('/api/v1/contacts', checkAuthToken, async (req, res) => {
   try {
     const result = await Contacts.query()
       .where('ownerId', '=', req['decodedToken'].sub)
-      .withGraphFetched('[addresses, comments]');
+      .withGraphFetched('[addresses, comments, emails]');
     res.json(result);
   } catch (err) {
     console.info(err);

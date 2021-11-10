@@ -7,7 +7,6 @@ export class Contacts extends BaseModel implements ContactModel {
   uuid;
   firstName;
   lastName;
-  email;
   dateOfBirth;
   addresses;
   comments;
@@ -30,6 +29,14 @@ export class Contacts extends BaseModel implements ContactModel {
       join: {
         from: 'contacts.id',
         to: 'addresses.contactId'
+      }
+    },
+    emails: {
+      modelClass: __dirname + '/emails.model',
+      relation: Model.HasManyRelation,
+      join: {
+        from: 'contacts.id',
+        to: 'emails.contactId'
       }
     },
   };

@@ -36,7 +36,6 @@ for (let modelIndex = 1; modelIndex < QUANTITY; modelIndex++) {
     uuid: faker.datatype.uuid(),
     firstName: faker.name.findName().split(' ')[0],
     lastName: faker.name.lastName(),
-    email: faker.internet.exampleEmail(),
     dateOfBirth: faker.date.past(faker.datatype.number(40) + 20),
     addresses: [address1, address2],
     comments: [comment1, comment2],
