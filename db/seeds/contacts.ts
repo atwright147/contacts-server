@@ -29,6 +29,7 @@ export async function seed(knex: Knex): Promise<void> {
       uuid: faker.datatype.uuid(),
       firstName: FIRST_NAME,
       lastName: LAST_NAME,
+      bio: faker.lorem.paragraphs(faker.datatype.number(2) + 1),
       dateOfBirth: faker.date.past(65, now).toISOString().split('T')[0],
       ownerId: faker.datatype.number({ min: 1, max: 3 }),
       createdAt: knex.fn.now() as any,

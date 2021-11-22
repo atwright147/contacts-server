@@ -7,6 +7,7 @@ export class Contacts extends BaseModel implements ContactModel {
   uuid;
   firstName;
   lastName;
+  bio;
   dateOfBirth;
   addresses;
   comments;
