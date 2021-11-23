@@ -5,6 +5,7 @@ export interface Contact {
   uuid: string,
   firstName: string,
   lastName: string,
+  jobTitle: string,
   bio: string,
   dateOfBirth: string | Date,
   addresses: Address[],
