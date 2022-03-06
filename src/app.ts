@@ -90,8 +90,8 @@ APP.patch('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
 
 APP.delete('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
   try {
-    const added = await Contacts.query().deleteById(Number(req.params.id));
-    res.json({ added });
+    const deleted = await Contacts.query().deleteById(Number(req.params.id));
+    res.json({ deleted });
   } catch (err) {
     console.info(err);
     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
