@@ -30,7 +30,7 @@ process.on('unhandledRejection', (error) => {
 const knexOptions = require('../knexfile').default;
 
 const knex = Knex(knexOptions[ENV]);
-Model.knex(knex);
+Model.knex(knex as any);
 
 export const APP = express();
 
@@ -109,9 +109,10 @@ APP.get('/api/v1/avatar/:id', checkAuthToken, async (req, res) => {
 
 APP.post('/api/v1/auth/login', async (req, res) => {
   const { email, password } = req.body;
+  const defaultUser = { id: '', firstName: '', lastName: '', password: '' };
 
   try {
-    const user = await Users.query().findOne({ email });
+    const user = await Users.query().findOne({ email }) ?? defaultUser;
     console.info(user);
     const isValidPassword = await bcrypt.compare(password, user.password);
 
