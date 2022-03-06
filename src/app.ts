@@ -117,9 +117,13 @@ APP.post('/api/v1/auth/login', async (req, res) => {
 
     if (isValidPassword) {
       const { id, firstName, lastName } = user;
+      const now = new Date();
+      const start = now.getTime();
+      const end = now.setHours(now.getHours() + 2);
+
       res.status(StatusCodes.OK);
       tokenCookie(generateToken({ sub: id, user: { firstName, lastName }} as TokenPayload), res);
-      res.json({ id, firstName, lastName });
+      res.json({ id, firstName, lastName, start, end });
     } else {
       res.sendStatus(StatusCodes.FORBIDDEN);
     }
