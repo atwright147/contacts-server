@@ -105,7 +105,7 @@ APP.delete('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
 
 APP.get('/api/v1/avatar/:id', checkAuthToken, async (req, res) => {
   try {
-    res.sendFile(path.resolve('images', 'avatars', `${req.params.id}.jpg`));
+    res.sendFile(path.resolve(path.join('assets', 'images', 'avatars', `${req.params.id}.jpg`)));
   } catch (err) {
     console.info(err);
     res.sendStatus(StatusCodes.NOT_FOUND);

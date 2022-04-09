@@ -9,7 +9,7 @@ import { promisify } from 'util';
 import path from 'path';
 import fs from 'fs-extra';
 
-const IMAGE_FOLDER = path.resolve('avatars');
+const IMAGE_FOLDER = path.resolve(path.join('assets', 'images', 'avatars'));
 fs.ensureDirSync(IMAGE_FOLDER);
 fs.emptyDirSync(IMAGE_FOLDER);
 
