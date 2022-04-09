@@ -34,7 +34,10 @@ Model.knex(knex as any);
 
 export const APP = express();
 
-APP.use(cors());
+APP.use(cors({
+  credentials: true,
+  origin: 'http://localhost:3000',
+}));
 APP.use(cookieParser());
 APP.use(express.json());
 APP.use(express.static(path.join(__dirname, 'public')));
