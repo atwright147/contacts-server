@@ -23,10 +23,9 @@ npm ci
 
 Copy `.env.example` to `.env` and update to taste
 
-### Database migrations
-
 ```sh
-npm run db:up
+# migrate db, seed db and download avatar images
+npm run setup
 ```
 
 ## Running
