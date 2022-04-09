@@ -19,8 +19,10 @@ import { decodeAuthToken } from './middleware/decode-auth-token';
 
 dotenv.config();
 
-const ENV = process.env.NODE_ENV ?? 'development';
+const ENV = process.env.NODE_ENV || 'development';
 const SECRET = process.env.SECRET as string;
+
+console.info('Running in', ENV, 'mode');
 
 process.on('unhandledRejection', (error) => {
   console.info('unhandledRejection', (error as Error).message);
