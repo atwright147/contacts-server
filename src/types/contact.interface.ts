@@ -11,6 +11,7 @@ export interface Contact {
   addresses: Address[],
   comments: string[],
   ownerId: number,
+  isFavourite: boolean,
 }
 
 export interface ContactModel extends Contact, Base {}

@@ -15,6 +15,7 @@ export async function up(knex: Knex): Promise<void> {
       table.string('bio');
       table.dateTime('dateOfBirth');
       table.integer('ownerId');
+      table.boolean('isFavourite');
       table.timestamp('createdAt');
       table.timestamp('updatedAt');
     });

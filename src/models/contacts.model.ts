@@ -13,6 +13,7 @@ export class Contacts extends BaseModel implements ContactModel {
   addresses;
   comments;
   ownerId;
+  isFavourite;
 
   static tableName = 'contacts';
 

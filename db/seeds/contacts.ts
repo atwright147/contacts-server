@@ -33,6 +33,7 @@ export async function seed(knex: Knex): Promise<void> {
       bio: faker.lorem.paragraphs(faker.datatype.number(2) + 1),
       dateOfBirth: faker.date.past(65, now).toISOString().split('T')[0],
       ownerId: faker.datatype.number({ min: 1, max: 3 }),
+      isFavourite: faker.datatype.boolean(),
       createdAt: knex.fn.now() as any,
       updatedAt: knex.fn.now() as any,
     });
