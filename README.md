@@ -35,7 +35,7 @@ npm run db:up
 npm run dev
 ```
 
-The server will be available on http://localhost:3000/ and all API endpoints are under `/api/v1/*`
+The server will be available on http://localhost:3001/ and all API endpoints are under `/api/v1/*` (port is based on the `.env` file)
 
 ## Tools
 
