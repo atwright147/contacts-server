@@ -21,7 +21,6 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "faker": "^6.6.6",
     "fs-extra": "^10.0.1",
     "http-status-codes": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
@@ -29,10 +28,10 @@
     "objection": "^3.0.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^6.1.2",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
-    "@types/faker": "^6.6.8",
     "@types/jest": "^27.4.1",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^17.0.21",

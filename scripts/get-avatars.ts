@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import dotenv from 'dotenv';
 import got from 'got';
 import { createWriteStream } from 'fs';
