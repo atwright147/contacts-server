@@ -21,6 +21,8 @@ system for the installation (prepare node-gyp): https://www.npmjs.com/package/vs
 npm ci
 ```
 
+Copy `.env.example` to `.env` and update to taste
+
 ### Database migrations
 
 ```sh
