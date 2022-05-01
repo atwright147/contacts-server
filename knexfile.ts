@@ -6,14 +6,16 @@ require('ts-node/register');
 import path from 'path';
 import { Knex } from 'knex';
 
-const dbFolder = path.join(__dirname, 'db');
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const dbFolder = path.resolve(process.env.DB_PATH!);
 
 const knexConfig: Record<string, Knex.Config> = {
   development: {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: path.join(dbFolder, 'dev.sqlite3'),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      filename: path.join(dbFolder, process.env.DB_FILE!),
     },
     migrations: {
       directory: path.join(dbFolder, 'migrations'),
@@ -28,14 +30,14 @@ const knexConfig: Record<string, Knex.Config> = {
     connection: {
       database: 'my_db',
       user:     'username',
-      password: 'password'
+      password: 'password',
     },
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
-      tableName: 'knex_migrations'
+      tableName: 'knex_migrations',
     }
   },
 
@@ -44,14 +46,14 @@ const knexConfig: Record<string, Knex.Config> = {
     connection: {
       database: 'my_db',
       user:     'username',
-      password: 'password'
+      password: 'password',
     },
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
-      tableName: 'knex_migrations'
+      tableName: 'knex_migrations',
     }
   }
 };

@@ -4,3 +4,5 @@
 /images/
 /avatars/
 /assets/images/avatars/
+/dist/
+.env.docker

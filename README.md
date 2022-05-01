@@ -41,3 +41,16 @@ The server will be available on http://localhost:3001/ and all API endpoints are
 ### Database
 
 I currently recommend using [SQLectron](https://sqlectron.github.io/) as a GUI to work with SQL databases
+
+## Docker
+
+A basic multi-stage Docker Compose file is set up to make it easier to run the application. This will watch for file changes andautomatically update them
+
+1. Run through the **Installation** steps (above)
+1. Copy the `.env.example` file to `.env.docker` and change the **DB** section to:
+    ```yaml
+    # DB
+    DB_PATH=/app/db
+    DB_FILE=dev.sqlite3
+    ```
+1. Run `docker-compose up -d`
