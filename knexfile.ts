@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 // Update with your config settings.
 
 // https://gist.github.com/tukkajukka/9893e5f111862d06044b73fa944a8741
@@ -6,14 +8,14 @@ require('ts-node/register');
 import path from 'path';
 import { Knex } from 'knex';
 
-const dbFolder = path.resolve(process.env.DB_PATH);
+const dbFolder = path.resolve(process.env.DB_PATH!);
 
 const knexConfig: Record<string, Knex.Config> = {
   development: {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: path.join(dbFolder, process.env.DB_FILE),
+      filename: path.join(dbFolder, process.env.DB_FILE!),
     },
     migrations: {
       directory: path.join(dbFolder, 'migrations'),
