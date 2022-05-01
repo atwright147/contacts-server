@@ -6,12 +6,15 @@
   "scripts": {
     "dev": "nodemon -w src -w .env -e ts,json --exec node -r ts-node/register ./src/server.ts",
     "dev:debug": "nodemon -V -w src -w .env -e ts,json --exec node --inspect=0.0.0.0 -r ts-node/register ./src/server.ts",
+    "prebuild": "rimraf dist/*",
+    "build": "webpack",
     "knex": "knex --knexfile knexfile.ts",
     "db:up": "npm run knex migrate:latest && npm run knex seed:run",
     "db:down": "./scripts/destroy-db.js",
     "db:refresh": "npm run db:down && npm run db:up",
     "avatars": "ts-node ./scripts/get-avatars.ts",
     "setup": "npm run db:up && npm run avatars",
+    "start": "node dist/server.js",
     "lint": "eslint . --ext .ts",
     "test": "jest"
   },
@@ -45,8 +48,12 @@
     "nodemon": "^2.0.15",
     "rimraf": "^3.0.2",
     "ts-jest": "^27.1.3",
+    "ts-loader": "^8.4.0",
     "ts-node": "^10.7.0",
-    "typescript": "^4.6.2"
+    "typescript": "^4.6.2",
+    "webpack": "^4.46.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-node-externals": "^3.0.0"
   },
   "keywords": [],
   "author": "Andy Wright <atwright147@gmail.com>",
