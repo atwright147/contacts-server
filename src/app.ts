@@ -16,6 +16,7 @@ import { generateToken, TokenPayload } from './utils/jwt/jwt';
 import { checkAuthToken } from './middleware/check-auth-token';
 import { tokenCookie } from './utils/token-cookie/token-cookie';
 import { decodeAuthToken } from './middleware/decode-auth-token';
+import { Contact } from './types/contact.interface';
 
 dotenv.config();
 
@@ -72,8 +73,12 @@ APP.get('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
 });
 
 APP.post('/api/v1/contacts', checkAuthToken, async (req, res) => {
+  const dataToInsert: Contact = req.body;
+  dataToInsert.ownerId = req['decodedToken'].sub;
+  dataToInsert.uuid = 'uuid';
+
   try {
-    const result = await Contacts.query().insert(req.body);
+    const result = await Contacts.query().insert(dataToInsert);
     res.json({ result });
   } catch (err) {
     console.info(err);
@@ -83,9 +88,24 @@ APP.post('/api/v1/contacts', checkAuthToken, async (req, res) => {
 
 APP.patch('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
   try {
+    const existingResource: Contacts[] = await Contacts.query()
+      .where('id', Number(req.params.id))
+      .andWhere('ownerId', '=', req['decodedToken'].sub);
+
+    if (!existingResource.length) {
+      res.sendStatus(StatusCodes.NOT_FOUND);
+    }
+  } catch (err) {
+    console.info(err);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+
+  const dataToInsert: Contact = req.body;
+
+  try {
     const result = await Contacts.query()
       .where('id', Number(req.params.id))
-      .update(req.body);
+      .update(dataToInsert);
     res.json({ result });
   } catch (err) {
     console.info(err);
@@ -94,6 +114,19 @@ APP.patch('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
 });
 
 APP.delete('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
+  try {
+    const existingResource: Contacts[] = await Contacts.query()
+      .where('id', Number(req.params.id))
+      .andWhere('ownerId', '=', req['decodedToken'].sub);
+
+    if (!existingResource.length) {
+      res.sendStatus(StatusCodes.NOT_FOUND);
+    }
+  } catch (err) {
+    console.info(err);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+
   try {
     const deleted = await Contacts.query().deleteById(Number(req.params.id));
     res.json({ deleted });
