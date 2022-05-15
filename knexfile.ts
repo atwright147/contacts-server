@@ -7,6 +7,9 @@ require('ts-node/register');
 
 import path from 'path';
 import { Knex } from 'knex';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const dbFolder = path.resolve(process.env.DB_PATH!);
 
