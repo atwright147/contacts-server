@@ -19,7 +19,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@vscode/sqlite3": "^5.0.7",
+    "@vscode/sqlite3": "^5.1.6-vscode",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
