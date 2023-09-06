@@ -33,6 +33,7 @@ process.on('unhandledRejection', (error) => {
 const knexOptions = require('../knexfile').default;
 
 const knex = Knex(knexOptions[ENV]);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 Model.knex(knex as any);
 
 export const APP = express();
@@ -78,7 +79,7 @@ APP.post('/api/v1/contacts', checkAuthToken, async (req, res) => {
   dataToInsert.uuid = 'uuid';
 
   try {
-    const result = await Contacts.query().insert(dataToInsert);
+    const result = await Contacts.query().insertGraph(dataToInsert);
     res.json({ result });
   } catch (err) {
     console.info(err);
@@ -135,7 +136,6 @@ APP.delete('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
     res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 });
-
 APP.get('/api/v1/avatar/:id', checkAuthToken, async (req, res) => {
   try {
     res.sendFile(path.resolve(path.join('assets', 'images', 'avatars', `${req.params.id}.jpg`)));
