@@ -3,7 +3,7 @@ import { Model } from 'objection';
 import { BaseModel } from './base.model';
 import { AddressModel } from '../types/address.interface';
 
-export class Comments extends BaseModel implements AddressModel {
+export class Addresses extends BaseModel implements AddressModel {
   contactId;
   address1;
   address2;

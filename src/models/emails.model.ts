@@ -3,7 +3,7 @@ import { Model } from 'objection';
 import { BaseModel } from './base.model';
 import { EmailModel } from '../types/email.interface';
 
-export class Email extends BaseModel implements EmailModel {
+export class Emails extends BaseModel implements EmailModel {
   contactId;
   email;
   isPrimary;

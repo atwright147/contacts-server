@@ -10,13 +10,18 @@ import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 
 import { delay } from './middleware/delay';
-import { Contacts } from './models/contacts.model';
-import { Users } from './models/users.model';
 import { generateToken, TokenPayload } from './utils/jwt/jwt';
 import { checkAuthToken } from './middleware/check-auth-token';
 import { tokenCookie } from './utils/token-cookie/token-cookie';
 import { decodeAuthToken } from './middleware/decode-auth-token';
+
 import { Contact } from './types/contact.interface';
+
+import { Contacts } from './models/contacts.model';
+import { Addresses } from './models/addresses.model';
+import { Comments } from './models/comments.model';
+import { Emails } from './models/emails.model';
+import { Users } from './models/users.model';
 
 dotenv.config();
 
@@ -115,27 +120,57 @@ APP.patch('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
 });
 
 APP.delete('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
+  let contactId: number;
+  let statusCode = StatusCodes.OK;
+
+  try {
+    contactId = Number(req.params.id);
+  } catch (err) {
+    console.info(err);
+    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+  }
+
   try {
     const existingResource: Contacts[] = await Contacts.query()
-      .where('id', Number(req.params.id))
+      .where('id', contactId!)
       .andWhere('ownerId', '=', req['decodedToken'].sub);
 
     if (!existingResource.length) {
-      res.sendStatus(StatusCodes.NOT_FOUND);
+      statusCode = StatusCodes.NOT_FOUND;
     }
   } catch (err) {
     console.info(err);
-    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
   }
 
   try {
-    const deleted = await Contacts.query().deleteById(Number(req.params.id));
-    res.json({ deleted });
-  } catch (err) {
+    const deleted = await Contacts.query().deleteById(contactId!);
+
+    // FIXME: hack to delete all related data (should be handled by foreinkey constraints)
+    await Addresses.query()
+      .where('contactId', contactId!)
+      .delete();
+
+    await Comments.query()
+      .where('contactId', contactId!)
+      .delete();
+
+    await Emails.query()
+      .where('contactId', contactId!)
+      .delete();
+
+      console.info(`Deleted: ${deleted}`);
+      statusCode = StatusCodes.OK;
+    } catch (err) {
     console.info(err);
-    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
   }
+  /* eslint-enable @typescript-eslint/no-non-null-assertion */
+
+  res.sendStatus(statusCode);
 });
+
 APP.get('/api/v1/avatar/:id', checkAuthToken, async (req, res) => {
   try {
     res.sendFile(path.resolve(path.join('assets', 'images', 'avatars', `${req.params.id}.jpg`)));
