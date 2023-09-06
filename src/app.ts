@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import path from 'path';
 import express from 'express';
 import cors from 'cors';
@@ -93,34 +95,46 @@ APP.post('/api/v1/contacts', checkAuthToken, async (req, res) => {
 });
 
 APP.patch('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
+  let contactId: number;
+  let statusCode = StatusCodes.OK;
+
+  try {
+    contactId = Number(req.params.id);
+  } catch (err) {
+    console.info(err);
+    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+  }
+
   try {
     const existingResource: Contacts[] = await Contacts.query()
-      .where('id', Number(req.params.id))
+      .where('id', contactId!)
       .andWhere('ownerId', '=', req['decodedToken'].sub);
 
     if (!existingResource.length) {
-      res.sendStatus(StatusCodes.NOT_FOUND);
+      statusCode = StatusCodes.NOT_FOUND;
     }
   } catch (err) {
     console.info(err);
-    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
   }
 
   const dataToInsert: Contact = req.body;
 
   try {
     const result = await Contacts.query()
-      .where('id', Number(req.params.id))
-      .update(dataToInsert);
-    res.json({ result });
+      // .where('id', contactId!)
+      .upsertGraph(dataToInsert);
+    console.info({ result });
+    statusCode = StatusCodes.OK;
   } catch (err) {
     console.info(err);
-    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
   }
+
+  res.sendStatus(statusCode);
 });
 
 APP.delete('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
-  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   let contactId: number;
   let statusCode = StatusCodes.OK;
 
@@ -166,7 +180,6 @@ APP.delete('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
     console.info(err);
     statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
   }
-  /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
   res.sendStatus(statusCode);
 });
