@@ -8,7 +8,8 @@ export async function up(knex: Knex): Promise<void> {
   if (!exists) {
     return knex.schema.createTable(TABLE_NAME, (table) => {
       table.increments();
-      table.integer('contactId');
+      table.integer('contactId').notNullable().index()
+        .references('id').inTable('contacts').onUpdate('CASCADE').onDelete('CASCADE');
       table.string('comment');
       table.timestamp('createdAt');
       table.timestamp('updatedAt');

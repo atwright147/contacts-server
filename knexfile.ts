@@ -20,6 +20,9 @@ const knexConfig: Record<string, Knex.Config> = {
     connection: {
       filename: path.join(dbFolder, process.env.DB_FILE!),
     },
+    pool: {
+      afterCreate: (conn, cb) => conn.run('PRAGMA foreign_keys = ON', cb),
+    },
     migrations: {
       directory: path.join(dbFolder, 'migrations'),
     },
