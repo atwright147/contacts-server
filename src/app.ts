@@ -209,8 +209,9 @@ APP.post('/api/v1/auth/login', async (req, res) => {
       const end = now.setHours(now.getHours() + 2);
 
       res.status(StatusCodes.OK);
-      tokenCookie(generateToken({ sub: id, user: { firstName, lastName }} as TokenPayload), res);
-      res.json({ id, firstName, lastName, start, end });
+      const token = generateToken({ sub: id, user: { firstName, lastName }} as TokenPayload);
+      tokenCookie(token, res);
+      res.json({ id, firstName, lastName, start, end, token });
     } else {
       res.sendStatus(StatusCodes.FORBIDDEN);
     }
