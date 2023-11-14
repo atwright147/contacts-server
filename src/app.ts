@@ -55,7 +55,7 @@ export const APP = express();
 
 APP.use(cors({
   credentials: true,
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000', 'http://localhost:5173'],
 }));
 APP.use(cookieParser());
 APP.use(express.json());

@@ -5,8 +5,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const SECRET = process.env.SECRET as string;
+const DISABLE_AUTH = JSON.parse(process.env.DISABLE_AUTH+'');
 
 export const checkAuthToken = (req: Request, res: Response, next: NextFunction): void => {
+  if (DISABLE_AUTH) {
+    req['user'] = 1;
+    req['decodedToken'] = { sub: 1 };
+    next();
+    return;
+  }
+
   const { token } = req.cookies;
 
   if (!token) {

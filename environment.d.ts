@@ -5,5 +5,6 @@ declare namespace NodeJS {
     NODE_ENV: 'development' | 'production';
     PORT: string;
     SECRET: string;
+    DISABLE_AUTH: string;
   }
 }
