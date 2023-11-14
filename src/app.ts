@@ -24,6 +24,14 @@ import { Addresses } from './models/addresses.model';
 import { Comments } from './models/comments.model';
 import { Emails } from './models/emails.model';
 import { Users } from './models/users.model';
+import { User, UserResource } from './types/user.interface';
+
+interface UserResponse {
+  id: string | number,
+  firstName: string,
+  lastName: string,
+  email: string,
+}
 
 dotenv.config();
 
@@ -195,23 +203,19 @@ APP.get('/api/v1/avatar/:id', checkAuthToken, async (req, res) => {
 
 APP.post('/api/v1/auth/login', async (req, res) => {
   const { email, password } = req.body;
-  const defaultUser = { id: '', firstName: '', lastName: '', password: '' };
+  const defaultUser: UserResource = { id: '', firstName: '', lastName: '', email: '', password: '' };
 
   try {
     const user = await Users.query().findOne({ email }) ?? defaultUser;
-    console.info(user);
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (isValidPassword) {
-      const { id, firstName, lastName } = user;
-      const now = new Date();
-      const start = now.getTime();
-      const end = now.setHours(now.getHours() + 2);
+      const { id, firstName, lastName, email } = user;
 
       res.status(StatusCodes.OK);
       const token = generateToken({ sub: id, user: { firstName, lastName }} as TokenPayload);
       tokenCookie(token, res);
-      res.json({ id, firstName, lastName, start, end, token });
+      res.json({ id, firstName, lastName, email, token });
     } else {
       res.sendStatus(StatusCodes.FORBIDDEN);
     }
