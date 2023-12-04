@@ -148,4 +148,26 @@ Authorization: {{authToken.token}}
 
 ###
 
+# https://github.com/Huachao/vscode-restclient#request-variables
+@authToken = {{login.response.headers.Set-Cookie}}
+
+# @prompt contactId ID of contact to favourite
+
+PATCH {{apiHost}}/v1/contacts/{{contactId}}/favourite HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{authToken.token}}
+
+###
+
+# https://github.com/Huachao/vscode-restclient#request-variables
+@authToken = {{login.response.headers.Set-Cookie}}
+
+# @prompt contactId ID of contact to favourite
+
+PATCH {{apiHost}}/v1/contacts/{{contactId}}/unfavourite HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{authToken.token}}
+
+###
+
 GET {{apiHost}}/v1/avatar/1 HTTP/1.1

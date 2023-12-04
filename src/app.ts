@@ -102,6 +102,30 @@ APP.post('/api/v1/contacts', checkAuthToken, async (req, res) => {
   }
 });
 
+APP.patch('/api/v1/contacts/:id/favourite', checkAuthToken, async (req, res) => {
+  try {
+    await Contacts.query()
+      .patch({ isFavourite: 1 })
+      .where('id', Number(req.params.id));
+    res.sendStatus(StatusCodes.NO_CONTENT);
+  } catch (err) {
+    console.info(err);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+});
+
+APP.patch('/api/v1/contacts/:id/unfavourite', checkAuthToken, async (req, res) => {
+  try {
+    await Contacts.query()
+      .patch({ isFavourite: 0 })
+      .where('id', Number(req.params.id));
+    res.sendStatus(StatusCodes.NO_CONTENT);
+  } catch (err) {
+    console.info(err);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+});
+
 APP.patch('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
   let contactId: number;
   let statusCode = StatusCodes.OK;
