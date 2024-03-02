@@ -80,7 +80,8 @@ APP.get('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
   try {
     const result = await Contacts.query()
       .where('id', Number(req.params.id))
-      .withGraphFetched('[addresses, comments]');
+      .withGraphFetched('[addresses, comments]')
+      .first();
     res.json(result);
   } catch (err) {
     console.info(err);
