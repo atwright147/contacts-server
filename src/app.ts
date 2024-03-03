@@ -77,7 +77,7 @@ APP.get('/api/v1/contacts', checkAuthToken, async (req, res) => {
 
 APP.get('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
   try {
-    const result = await Contacts.query().where('id', Number(req.params.id)).withGraphFetched('[addresses, comments]').first();
+    const result = await Contacts.query().where('id', Number(req.params.id)).withGraphFetched('[addresses, comments, emails]').first();
     res.json(result);
   } catch (err) {
     console.info(err);
