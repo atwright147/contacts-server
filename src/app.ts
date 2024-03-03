@@ -66,6 +66,7 @@ APP.get('/api/v1/contacts', checkAuthToken, async (req, res) => {
   try {
     const result = await Contacts.query()
       .select('id', 'firstName', 'lastName', 'isFavourite', 'jobTitle')
+      // biome-ignore lint/complexity/useLiteralKeys: <explanation>
       .where('ownerId', '=', req['decodedToken'].sub);
     res.json(result);
   } catch (err) {
@@ -86,6 +87,7 @@ APP.get('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
 
 APP.post('/api/v1/contacts', checkAuthToken, async (req, res) => {
   const dataToInsert: Contact = req.body;
+  // biome-ignore lint/complexity/useLiteralKeys: <explanation>
   dataToInsert.ownerId = req['decodedToken'].sub;
   dataToInsert.uuid = 'uuid';
 
