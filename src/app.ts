@@ -1,25 +1,25 @@
 import path from 'path';
-import express from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-import Knex from 'knex';
-import { Model } from 'objection';
-import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
 import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
+import Knex from 'knex';
+import { Model } from 'objection';
 
-import { delay } from './middleware/delay';
-import { generateToken, TokenPayload } from './utils/jwt/jwt';
 import { checkAuthToken } from './middleware/check-auth-token';
-import { tokenCookie } from './utils/token-cookie/token-cookie';
 import { decodeAuthToken } from './middleware/decode-auth-token';
+import { delay } from './middleware/delay';
+import { TokenPayload, generateToken } from './utils/jwt/jwt';
+import { tokenCookie } from './utils/token-cookie/token-cookie';
 
 import { Contact } from './types/contact.interface';
 
-import { Contacts } from './models/contacts.model';
 import { Addresses } from './models/addresses.model';
 import { Comments } from './models/comments.model';
+import { Contacts } from './models/contacts.model';
 import { Emails } from './models/emails.model';
 import { Users } from './models/users.model';
 import { UserResource } from './types/user.interface';
