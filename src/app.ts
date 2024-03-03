@@ -66,6 +66,7 @@ APP.get('/api/v1/contacts', checkAuthToken, async (req, res) => {
   try {
     const result = await Contacts.query()
       .select('id', 'firstName', 'lastName', 'isFavourite', 'jobTitle')
+      .orderBy([{ column: 'firstName' }, { column: 'lastName', order: 'asc' }])
       // biome-ignore lint/complexity/useLiteralKeys: <explanation>
       .where('ownerId', '=', req['decodedToken'].sub);
     res.json(result);
