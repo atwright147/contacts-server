@@ -8,21 +8,20 @@ dotenv.config();
 faker.seed(1234567);
 
 const TABLE_NAME = 'contacts';
-const QUANTITY = Number(process.env.QUANTITY_CONTACTS ?? 10);
+const QUANTITY_CONTACTS = Number(process.env.QUANTITY_CONTACTS ?? 30);
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
   await knex(TABLE_NAME).del();
 
-  const seedData: Omit<ContactModel, 'addresses' | 'comments' | 'id'>[] = [];
-  for (let index = 1; index <= QUANTITY; index++) {
+  for (let contactIndex = 1; contactIndex <= QUANTITY_CONTACTS; contactIndex++) {
     const FIRST_NAME = faker.person.firstName();
     const LAST_NAME = faker.person.lastName();
 
     const now = new Date();
     now.setFullYear(now.getFullYear() - 20);
 
-    seedData.push({
+    const seedData: Omit<ContactModel, 'addresses' | 'comments' | 'id'> = {
       uuid: faker.string.uuid(),
       firstName: FIRST_NAME,
       lastName: LAST_NAME,
@@ -35,9 +34,9 @@ export async function seed(knex: Knex): Promise<void> {
       createdAt: knex.fn.now(),
       // @ts-ignore
       updatedAt: knex.fn.now(),
-    });
-  }
+    };
 
-  // Inserts seed entries
-  await knex(TABLE_NAME).insert(seedData);
+    // Inserts seed entries
+    await knex(TABLE_NAME).insert(seedData);
+  }
 }

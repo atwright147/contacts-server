@@ -8,24 +8,28 @@ dotenv.config();
 faker.seed(1234567);
 
 const TABLE_NAME = 'comments';
-const QUANTITY = Number(process.env.QUANTITY ?? 10);
+const QUANTITY = Number(process.env.QUANTITY ?? 3);
+const QUANTITY_CONTACTS = Number(process.env.QUANTITY_CONTACTS ?? 10);
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
   await knex(TABLE_NAME).del();
 
-  const seedData: Omit<CommentModel, 'id'>[] = [];
-  for (let index = 1; index <= QUANTITY; index++) {
-    seedData.push({
-      contactId: index,
-      comment: faker.lorem.sentences(2),
-      // @ts-ignore
-      createdAt: knex.fn.now(),
-      // @ts-ignore
-      updatedAt: knex.fn.now(),
-    });
-  }
+  for (let contactIndex = 1; contactIndex <= QUANTITY_CONTACTS; contactIndex++) {
+    const maxComments = faker.number.int({ min: 0, max: QUANTITY });
 
-  // Inserts seed entries
-  await knex(TABLE_NAME).insert(seedData);
+    for (let seedIndex = 1; seedIndex <= maxComments; seedIndex++) {
+      const seedData: Omit<CommentModel, 'id'> = {
+        contactId: contactIndex,
+        comment: faker.lorem.sentences(2),
+        // @ts-ignore
+        createdAt: knex.fn.now(),
+        // @ts-ignore
+        updatedAt: knex.fn.now(),
+      };
+
+      // Inserts seed entries
+      await knex(TABLE_NAME).insert(seedData);
+    }
+  }
 }

@@ -8,29 +8,29 @@ dotenv.config();
 faker.seed(1234567);
 
 const TABLE_NAME = 'emails';
-const QUANTITY = 100;
+const QUANTITY = Number(process.env.QUANTITY ?? 3);
+const QUANTITY_CONTACTS = Number(process.env.QUANTITY_CONTACTS ?? 30);
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
   await knex(TABLE_NAME).del();
 
-  const seedData: Omit<EmailModel, 'id'>[] = [];
-  for (let index = 1; index <= QUANTITY; index++) {
-    const maxEmails = faker.number.int(3) + 1;
+  for (let contactIndex = 1; contactIndex <= QUANTITY_CONTACTS; contactIndex++) {
+    const maxEmails = faker.number.int({ min: 0, max: QUANTITY });
 
-    for (let emailIndex = 1; emailIndex <= maxEmails; emailIndex++) {
-      seedData.push({
-        contactId: index,
+    for (let seedIndex = 1; seedIndex <= maxEmails; seedIndex++) {
+      const seedData: Omit<EmailModel, 'id'> = {
+        contactId: contactIndex,
         email: faker.internet.exampleEmail(),
-        isPrimary: emailIndex === 1 ? 1 : 0,
+        isPrimary: seedIndex === 1 ? 1 : 0,
         // @ts-ignore
         createdAt: knex.fn.now(),
         // @ts-ignore
         updatedAt: knex.fn.now(),
-      });
+      };
+
+      // Inserts seed entries
+      await knex(TABLE_NAME).insert(seedData);
     }
   }
-
-  // Inserts seed entries
-  await knex(TABLE_NAME).insert(seedData);
 }
