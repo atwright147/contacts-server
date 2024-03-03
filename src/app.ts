@@ -64,16 +64,6 @@ APP.all('*', decodeAuthToken);
 
 APP.get('/api/v1/contacts', checkAuthToken, async (req, res) => {
   try {
-    const result = await Contacts.query().where('ownerId', '=', req['decodedToken'].sub).withGraphFetched('[addresses, comments, emails]');
-    res.json(result);
-  } catch (err) {
-    console.info(err);
-    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
-  }
-});
-
-APP.get('/api/v2/contacts', checkAuthToken, async (req, res) => {
-  try {
     const result = await Contacts.query()
       .select('id', 'firstName', 'lastName', 'isFavourite', 'jobTitle')
       .where('ownerId', '=', req['decodedToken'].sub);
