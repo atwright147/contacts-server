@@ -16,8 +16,8 @@ export class Emails extends BaseModel implements EmailModel {
       relation: Model.HasOneRelation,
       join: {
         from: 'emails.contactId',
-        to: 'contacts.id'
-      }
+        to: 'contacts.id',
+      },
     },
   };
 }

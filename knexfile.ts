@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 // Update with your config settings.
 
 // https://gist.github.com/tukkajukka/9893e5f111862d06044b73fa944a8741
@@ -25,14 +23,14 @@ const knexConfig: Record<string, Knex.Config> = {
     },
     seeds: {
       directory: path.join(dbFolder, 'seeds'),
-    }
+    },
   },
 
   staging: {
     client: 'postgresql',
     connection: {
       database: 'my_db',
-      user:     'username',
+      user: 'username',
       password: 'password',
     },
     pool: {
@@ -41,14 +39,14 @@ const knexConfig: Record<string, Knex.Config> = {
     },
     migrations: {
       tableName: 'knex_migrations',
-    }
+    },
   },
 
   production: {
     useNullAsDefault: true,
     connection: {
       database: 'my_db',
-      user:     'username',
+      user: 'username',
       password: 'password',
     },
     pool: {
@@ -57,8 +55,8 @@ const knexConfig: Record<string, Knex.Config> = {
     },
     migrations: {
       tableName: 'knex_migrations',
-    }
-  }
+    },
+  },
 };
 
 export default knexConfig;

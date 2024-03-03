@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
@@ -20,7 +18,7 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        use: ['ts-loader']
+        use: ['ts-loader'],
       },
     ],
   },

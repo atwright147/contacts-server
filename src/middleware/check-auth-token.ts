@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const SECRET = process.env.SECRET as string;
-const DISABLE_AUTH = JSON.parse(process.env.DISABLE_AUTH+'');
+const DISABLE_AUTH = JSON.parse(process.env.DISABLE_AUTH + '');
 
 export const checkAuthToken = (req: Request, res: Response, next: NextFunction): void => {
   if (DISABLE_AUTH) {
@@ -29,4 +29,4 @@ export const checkAuthToken = (req: Request, res: Response, next: NextFunction):
       next();
     });
   }
-}
+};

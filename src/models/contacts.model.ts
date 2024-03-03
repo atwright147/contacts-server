@@ -1,7 +1,7 @@
 import { Model } from 'objection';
 
 import { ContactModel } from '../types/contact.interface';
-import { BaseModel } from './base.model'
+import { BaseModel } from './base.model';
 
 export class Contacts extends BaseModel implements ContactModel {
   uuid;
@@ -23,24 +23,24 @@ export class Contacts extends BaseModel implements ContactModel {
       relation: Model.HasManyRelation,
       join: {
         from: 'contacts.id',
-        to: 'comments.contactId'
-      }
+        to: 'comments.contactId',
+      },
     },
     addresses: {
       modelClass: __dirname + '/addresses.model',
       relation: Model.HasManyRelation,
       join: {
         from: 'contacts.id',
-        to: 'addresses.contactId'
-      }
+        to: 'addresses.contactId',
+      },
     },
     emails: {
       modelClass: __dirname + '/emails.model',
       relation: Model.HasManyRelation,
       join: {
         from: 'contacts.id',
-        to: 'emails.contactId'
-      }
+        to: 'emails.contactId',
+      },
     },
   };
 }

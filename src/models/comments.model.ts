@@ -15,8 +15,8 @@ export class Comments extends BaseModel implements CommentModel {
       relation: Model.HasOneRelation,
       join: {
         from: 'comments.contactId',
-        to: 'comments.id'
-      }
+        to: 'comments.id',
+      },
     },
   };
 }

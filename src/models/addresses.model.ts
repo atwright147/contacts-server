@@ -21,8 +21,8 @@ export class Addresses extends BaseModel implements AddressModel {
       relation: Model.HasOneRelation,
       join: {
         from: 'addresses.contactId',
-        to: 'contacts.id'
-      }
+        to: 'contacts.id',
+      },
     },
   };
 }

@@ -1,6 +1,6 @@
 import { Model } from 'objection';
 
-import { BaseModel } from './base.model'
+import { BaseModel } from './base.model';
 import { UserModel } from '../types/user.interface';
 
 export class Users extends BaseModel implements UserModel {
@@ -19,8 +19,8 @@ export class Users extends BaseModel implements UserModel {
       relation: Model.HasManyRelation,
       join: {
         from: 'users.id',
-        to: 'contacts.ownerId'
-      }
+        to: 'contacts.ownerId',
+      },
     },
   };
 }

@@ -11,7 +11,7 @@ describe('safe-resource', () => {
       info2: 'info2',
       info3: 'info3',
       sensitive: 'sensitive',
-    }
+    };
   });
 
   describe('safe()', () => {

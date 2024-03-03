@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 import path from 'path';
 import express from 'express';
 import cors from 'cors';
@@ -24,13 +22,13 @@ import { Addresses } from './models/addresses.model';
 import { Comments } from './models/comments.model';
 import { Emails } from './models/emails.model';
 import { Users } from './models/users.model';
-import { User, UserResource } from './types/user.interface';
+import { UserResource } from './types/user.interface';
 
 interface UserResponse {
-  id: string | number,
-  firstName: string,
-  lastName: string,
-  email: string,
+  id: string | number;
+  firstName: string;
+  lastName: string;
+  email: string;
 }
 
 dotenv.config();
@@ -44,19 +42,19 @@ process.on('unhandledRejection', (error) => {
   console.info('unhandledRejection', (error as Error).message);
 });
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const knexOptions = require('../knexfile').default;
 
 const knex = Knex(knexOptions[ENV]);
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 Model.knex(knex as any);
 
 export const APP = express();
 
-APP.use(cors({
-  credentials: true,
-  origin: ['http://localhost:3000', 'http://localhost:5173'],
-}));
+APP.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:3000', 'http://localhost:5173'],
+  }),
+);
 APP.use(cookieParser());
 APP.use(express.json());
 APP.use(express.static(path.join(__dirname, 'public')));
@@ -66,9 +64,7 @@ APP.all('*', decodeAuthToken);
 
 APP.get('/api/v1/contacts', checkAuthToken, async (req, res) => {
   try {
-    const result = await Contacts.query()
-      .where('ownerId', '=', req['decodedToken'].sub)
-      .withGraphFetched('[addresses, comments, emails]');
+    const result = await Contacts.query().where('ownerId', '=', req['decodedToken'].sub).withGraphFetched('[addresses, comments, emails]');
     res.json(result);
   } catch (err) {
     console.info(err);
@@ -90,10 +86,7 @@ APP.get('/api/v2/contacts', checkAuthToken, async (req, res) => {
 
 APP.get('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
   try {
-    const result = await Contacts.query()
-      .where('id', Number(req.params.id))
-      .withGraphFetched('[addresses, comments]')
-      .first();
+    const result = await Contacts.query().where('id', Number(req.params.id)).withGraphFetched('[addresses, comments]').first();
     res.json(result);
   } catch (err) {
     console.info(err);
@@ -117,9 +110,7 @@ APP.post('/api/v1/contacts', checkAuthToken, async (req, res) => {
 
 APP.patch('/api/v1/contacts/:id/favourite', checkAuthToken, async (req, res) => {
   try {
-    await Contacts.query()
-      .patch({ isFavourite: 1 })
-      .where('id', Number(req.params.id));
+    await Contacts.query().patch({ isFavourite: 1 }).where('id', Number(req.params.id));
     res.sendStatus(StatusCodes.NO_CONTENT);
   } catch (err) {
     console.info(err);
@@ -129,9 +120,7 @@ APP.patch('/api/v1/contacts/:id/favourite', checkAuthToken, async (req, res) => 
 
 APP.patch('/api/v1/contacts/:id/unfavourite', checkAuthToken, async (req, res) => {
   try {
-    await Contacts.query()
-      .patch({ isFavourite: 0 })
-      .where('id', Number(req.params.id));
+    await Contacts.query().patch({ isFavourite: 0 }).where('id', Number(req.params.id));
     res.sendStatus(StatusCodes.NO_CONTENT);
   } catch (err) {
     console.info(err);
@@ -151,9 +140,7 @@ APP.patch('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
   }
 
   try {
-    const existingResource: Contacts[] = await Contacts.query()
-      .where('id', contactId!)
-      .andWhere('ownerId', '=', req['decodedToken'].sub);
+    const existingResource: Contacts[] = await Contacts.query().where('id', contactId!).andWhere('ownerId', '=', req['decodedToken'].sub);
 
     if (!existingResource.length) {
       statusCode = StatusCodes.NOT_FOUND;
@@ -191,9 +178,7 @@ APP.delete('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
   }
 
   try {
-    const existingResource: Contacts[] = await Contacts.query()
-      .where('id', contactId!)
-      .andWhere('ownerId', '=', req['decodedToken'].sub);
+    const existingResource: Contacts[] = await Contacts.query().where('id', contactId!).andWhere('ownerId', '=', req['decodedToken'].sub);
 
     if (!existingResource.length) {
       statusCode = StatusCodes.NOT_FOUND;
@@ -207,21 +192,15 @@ APP.delete('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
     const deleted = await Contacts.query().deleteById(contactId!);
 
     // FIXME: hack to delete all related data (should be handled by foreinkey constraints)
-    await Addresses.query()
-      .where('contactId', contactId!)
-      .delete();
+    await Addresses.query().where('contactId', contactId!).delete();
 
-    await Comments.query()
-      .where('contactId', contactId!)
-      .delete();
+    await Comments.query().where('contactId', contactId!).delete();
 
-    await Emails.query()
-      .where('contactId', contactId!)
-      .delete();
+    await Emails.query().where('contactId', contactId!).delete();
 
-      console.info(`Deleted: ${deleted}`);
-      statusCode = StatusCodes.OK;
-    } catch (err) {
+    console.info(`Deleted: ${deleted}`);
+    statusCode = StatusCodes.OK;
+  } catch (err) {
     console.info(err);
     statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
   }
@@ -243,14 +222,14 @@ APP.post('/api/v1/auth/login', async (req, res) => {
   const defaultUser: UserResource = { id: '', firstName: '', lastName: '', email: '', password: '' };
 
   try {
-    const user = await Users.query().findOne({ email }) ?? defaultUser;
+    const user = (await Users.query().findOne({ email })) ?? defaultUser;
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (isValidPassword) {
       const { id, firstName, lastName, email } = user;
 
       res.status(StatusCodes.OK);
-      const token = generateToken({ sub: id, user: { firstName, lastName }} as TokenPayload);
+      const token = generateToken({ sub: id, user: { firstName, lastName } } as TokenPayload);
       tokenCookie(token, res);
       res.json({ id, firstName, lastName, email, token });
     } else {

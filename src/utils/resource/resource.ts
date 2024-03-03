@@ -1,9 +1,4 @@
-export const defaultPropsToHide: string[] = [
-  'id',
-  'password',
-  'createdAt',
-  'updatedAt',
-];
+export const defaultPropsToHide: string[] = ['id', 'password', 'createdAt', 'updatedAt'];
 
 export class Resource<T> {
   private resource: T;

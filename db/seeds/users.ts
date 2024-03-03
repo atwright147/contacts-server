@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { faker } from '@faker-js/faker';
 import dotenv from 'dotenv';
 import { Knex } from 'knex';
@@ -32,7 +30,7 @@ export async function seed(knex: Knex): Promise<void> {
     active: 1,
     createdAt: knex.fn.now() as any,
     updatedAt: knex.fn.now() as any,
-  }
+  };
 
   seedData.push(defaultUser);
 

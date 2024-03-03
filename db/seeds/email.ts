@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { faker } from '@faker-js/faker';
 import dotenv from 'dotenv';
 import { Knex } from 'knex';
