@@ -27,7 +27,7 @@ export async function seed(knex: Knex): Promise<void> {
         city: faker.location.city(),
         county: faker.location.county(),
         postCode: faker.location.zipCode(),
-        isPrimary: contactIndex === 1 ? 1 : 0,
+        isPrimary: seedIndex === 1 ? 1 : 0,
         // @ts-ignore
         createdAt: knex.fn.now(),
         // @ts-ignore
