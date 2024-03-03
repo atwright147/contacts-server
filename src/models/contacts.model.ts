@@ -1,3 +1,4 @@
+import path from 'path';
 import { Model } from 'objection';
 
 import { ContactModel } from '../types/contact.interface';
@@ -19,7 +20,7 @@ export class Contacts extends BaseModel implements ContactModel {
 
   static relationMappings = {
     comments: {
-      modelClass: __dirname + '/comments.model',
+      modelClass: path.join(__dirname, 'comments.model'),
       relation: Model.HasManyRelation,
       join: {
         from: 'contacts.id',
@@ -27,7 +28,7 @@ export class Contacts extends BaseModel implements ContactModel {
       },
     },
     addresses: {
-      modelClass: __dirname + '/addresses.model',
+      modelClass: path.join(__dirname, 'addresses.model'),
       relation: Model.HasManyRelation,
       join: {
         from: 'contacts.id',
@@ -35,7 +36,7 @@ export class Contacts extends BaseModel implements ContactModel {
       },
     },
     emails: {
-      modelClass: __dirname + '/emails.model',
+      modelClass: path.join(__dirname, 'emails.model'),
       relation: Model.HasManyRelation,
       join: {
         from: 'contacts.id',

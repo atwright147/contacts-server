@@ -1,13 +1,12 @@
-import { faker } from '@faker-js/faker';
+import { fakerEN_GB as faker } from '@faker-js/faker';
+import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { Knex } from 'knex';
-import bcrypt from 'bcrypt';
 import { UserModel } from '../../src/types/user.interface';
 
 dotenv.config();
 
 faker.seed(1234567);
-faker.locale = 'en_GB';
 
 const TABLE_NAME = 'users';
 const QUANTITY = 3;
@@ -28,26 +27,28 @@ export async function seed(knex: Knex): Promise<void> {
     email: 'admin@example.com',
     password: PASSWORD,
     active: 1,
-    createdAt: knex.fn.now() as any,
-    updatedAt: knex.fn.now() as any,
+    createdAt: String(knex.fn.now()),
+    updatedAt: String(knex.fn.now()),
   };
 
   seedData.push(defaultUser);
 
   for (let index = 2; index <= QUANTITY; index++) {
-    const FIRST_NAME = faker.name.firstName();
-    const LAST_NAME = faker.name.lastName();
+    const firstName = faker.person.firstName();
+    const lastName = faker.person.lastName();
 
     seedData.push({
       // id: index,
       contactId: index,
-      firstName: FIRST_NAME,
-      lastName: LAST_NAME,
-      email: faker.internet.exampleEmail(FIRST_NAME, LAST_NAME),
+      firstName,
+      lastName,
+      email: faker.internet.exampleEmail({ firstName, lastName }),
       password: PASSWORD,
       active: 1,
-      createdAt: knex.fn.now() as any,
-      updatedAt: knex.fn.now() as any,
+      // @ts-ignore
+      createdAt: knex.fn.now(),
+      // @ts-ignore
+      updatedAt: knex.fn.now(),
     });
   }
 

@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker';
+import { fakerEN_GB as faker } from '@faker-js/faker';
 import dotenv from 'dotenv';
 import { Knex } from 'knex';
 import { AddressModel } from '../../src/types/address.interface';
@@ -6,10 +6,9 @@ import { AddressModel } from '../../src/types/address.interface';
 dotenv.config();
 
 faker.seed(1234567);
-faker.locale = 'en_GB';
 
 const TABLE_NAME = 'addresses';
-const QUANTITY = process.env.QUANTITY ?? 10;
+const QUANTITY = Number(process.env.QUANTITY ?? 10);
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
@@ -19,15 +18,17 @@ export async function seed(knex: Knex): Promise<void> {
   for (let index = 1; index <= QUANTITY; index++) {
     seedData.push({
       contactId: index,
-      address1: faker.address.streetAddress(),
-      address2: faker.address.streetAddress(),
-      address3: faker.address.streetAddress(),
-      city: faker.address.city(),
-      county: faker.address.county(),
-      postCode: faker.address.zipCode(),
+      address1: faker.location.streetAddress(),
+      address2: faker.location.streetAddress(),
+      address3: faker.location.streetAddress(),
+      city: faker.location.city(),
+      county: faker.location.county(),
+      postCode: faker.location.zipCode(),
       isPrimary: index === 1 ? 1 : 0,
-      createdAt: knex.fn.now() as any,
-      updatedAt: knex.fn.now() as any,
+      // @ts-ignore
+      createdAt: knex.fn.now(),
+      // @ts-ignore
+      updatedAt: knex.fn.now(),
     });
   }
 

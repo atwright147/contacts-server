@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker';
+import { fakerEN_GB as faker } from '@faker-js/faker';
 import dotenv from 'dotenv';
 import { Knex } from 'knex';
 import { EmailModel } from '../../src/types/email.interface';
@@ -6,7 +6,6 @@ import { EmailModel } from '../../src/types/email.interface';
 dotenv.config();
 
 faker.seed(1234567);
-faker.locale = 'en_GB';
 
 const TABLE_NAME = 'emails';
 const QUANTITY = 100;
@@ -17,15 +16,17 @@ export async function seed(knex: Knex): Promise<void> {
 
   const seedData: Omit<EmailModel, 'id'>[] = [];
   for (let index = 1; index <= QUANTITY; index++) {
-    const maxEmails = faker.datatype.number(3) + 1;
+    const maxEmails = faker.number.int(3) + 1;
 
     for (let emailIndex = 1; emailIndex <= maxEmails; emailIndex++) {
       seedData.push({
         contactId: index,
         email: faker.internet.exampleEmail(),
         isPrimary: emailIndex === 1 ? 1 : 0,
-        createdAt: knex.fn.now() as any,
-        updatedAt: knex.fn.now() as any,
+        // @ts-ignore
+        createdAt: knex.fn.now(),
+        // @ts-ignore
+        updatedAt: knex.fn.now(),
       });
     }
   }

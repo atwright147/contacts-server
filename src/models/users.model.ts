@@ -1,7 +1,8 @@
 import { Model } from 'objection';
 
-import { BaseModel } from './base.model';
+import path from 'path';
 import { UserModel } from '../types/user.interface';
+import { BaseModel } from './base.model';
 
 export class Users extends BaseModel implements UserModel {
   contactId;
@@ -15,7 +16,7 @@ export class Users extends BaseModel implements UserModel {
 
   static relationMappings = {
     contacts: {
-      modelClass: __dirname + '/contacts.model',
+      modelClass: path.join(__dirname, 'contacts.model'),
       relation: Model.HasManyRelation,
       join: {
         from: 'users.id',

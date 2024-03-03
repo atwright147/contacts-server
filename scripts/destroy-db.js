@@ -3,7 +3,14 @@
 require('ts-node/register');
 
 const path = require('path');
-const rimraf = require('rimraf');
+const { rimrafSync } = require('rimraf');
 const knexConfig = require('../knexfile').default;
 
-rimraf(path.resolve(knexConfig.development.connection.filename), (err) => err && console.info(err));
+const filename = knexConfig.development.connection?.filename ?? '';
+
+try {
+  rimrafSync(path.resolve(filename));
+} catch (error) {
+  console.error(error);
+  process.exit(1);
+}

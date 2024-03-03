@@ -45,7 +45,7 @@ process.on('unhandledRejection', (error) => {
 const knexOptions = require('../knexfile').default;
 
 const knex = Knex(knexOptions[ENV]);
-Model.knex(knex as any);
+Model.knex(knex as Knex.Knex<Record<string, string>>);
 
 export const APP = express();
 
@@ -111,8 +111,15 @@ APP.patch('/api/v1/contacts/:id/favourite', checkAuthToken, async (req, res) => 
 });
 
 APP.patch('/api/v1/contacts/:id/unfavourite', checkAuthToken, async (req, res) => {
+  const contactId = Number(req.params.id);
+
+  if (!Number.isInteger(contactId)) {
+    console.info('Invalid ID', contactId);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+
   try {
-    await Contacts.query().patch({ isFavourite: 0 }).where('id', Number(req.params.id));
+    await Contacts.query().patch({ isFavourite: 0 }).where('id', contactId);
     res.sendStatus(StatusCodes.NO_CONTENT);
   } catch (err) {
     console.info(err);
@@ -121,18 +128,17 @@ APP.patch('/api/v1/contacts/:id/unfavourite', checkAuthToken, async (req, res) =
 });
 
 APP.patch('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
-  let contactId: number;
   let statusCode = StatusCodes.OK;
+  const contactId = Number(req.params.id);
 
-  try {
-    contactId = Number(req.params.id);
-  } catch (err) {
-    console.info(err);
-    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+  if (!Number.isInteger(contactId)) {
+    console.info('Invalid ID', contactId);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 
   try {
-    const existingResource: Contacts[] = await Contacts.query().where('id', contactId!).andWhere('ownerId', '=', req['decodedToken'].sub);
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
+    const existingResource: Contacts[] = await Contacts.query().where('id', contactId).andWhere('ownerId', '=', req['decodedToken'].sub);
 
     if (!existingResource.length) {
       statusCode = StatusCodes.NOT_FOUND;
@@ -159,18 +165,18 @@ APP.patch('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
 });
 
 APP.delete('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
-  let contactId: number;
   let statusCode = StatusCodes.OK;
 
-  try {
-    contactId = Number(req.params.id);
-  } catch (err) {
-    console.info(err);
-    statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+  const contactId = Number(req.params.id);
+
+  if (!Number.isInteger(contactId)) {
+    console.info('Invalid ID', contactId);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
   }
 
   try {
-    const existingResource: Contacts[] = await Contacts.query().where('id', contactId!).andWhere('ownerId', '=', req['decodedToken'].sub);
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
+    const existingResource: Contacts[] = await Contacts.query().where('id', contactId).andWhere('ownerId', '=', req['decodedToken'].sub);
 
     if (!existingResource.length) {
       statusCode = StatusCodes.NOT_FOUND;
@@ -181,14 +187,14 @@ APP.delete('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
   }
 
   try {
-    const deleted = await Contacts.query().deleteById(contactId!);
+    const deleted = await Contacts.query().deleteById(contactId);
 
     // FIXME: hack to delete all related data (should be handled by foreinkey constraints)
-    await Addresses.query().where('contactId', contactId!).delete();
+    await Addresses.query().where('contactId', contactId).delete();
 
-    await Comments.query().where('contactId', contactId!).delete();
+    await Comments.query().where('contactId', contactId).delete();
 
-    await Emails.query().where('contactId', contactId!).delete();
+    await Emails.query().where('contactId', contactId).delete();
 
     console.info(`Deleted: ${deleted}`);
     statusCode = StatusCodes.OK;
@@ -201,8 +207,15 @@ APP.delete('/api/v1/contacts/:id', checkAuthToken, async (req, res) => {
 });
 
 APP.get('/api/v1/avatar/:id', checkAuthToken, async (req, res) => {
+  const contactId = Number(req.params.id);
+
+  if (!Number.isInteger(contactId)) {
+    console.info('Invalid ID', contactId);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+
   try {
-    res.sendFile(path.resolve(path.join('assets', 'images', 'avatars', `${req.params.id}.jpg`)));
+    res.sendFile(path.resolve(path.join('assets', 'images', 'avatars', `${contactId}.jpg`)));
   } catch (err) {
     console.info(err);
     res.sendStatus(StatusCodes.NOT_FOUND);

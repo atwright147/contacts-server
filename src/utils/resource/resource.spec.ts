@@ -31,6 +31,7 @@ describe('safe-resource', () => {
       test('should throw', () => {
         const service = new Resource(data);
 
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         expect(() => service.safe('invalid' as any)).toThrowError('Invalid arg, should be an array');
       });
     });

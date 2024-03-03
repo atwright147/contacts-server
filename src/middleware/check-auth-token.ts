@@ -1,15 +1,17 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { NextFunction, Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
 const SECRET = process.env.SECRET as string;
-const DISABLE_AUTH = JSON.parse(process.env.DISABLE_AUTH + '');
+const DISABLE_AUTH = JSON.parse(process.env.DISABLE_AUTH ?? '');
 
 export const checkAuthToken = (req: Request, res: Response, next: NextFunction): void => {
   if (DISABLE_AUTH) {
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
     req['user'] = 1;
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
     req['decodedToken'] = { sub: 1 };
     next();
     return;
@@ -25,6 +27,7 @@ export const checkAuthToken = (req: Request, res: Response, next: NextFunction):
         res.status(500).json({ message: 'Failed to authenticate token' });
       }
 
+      // biome-ignore lint/complexity/useLiteralKeys: <explanation>
       req['user'] = value?.data;
       next();
     });

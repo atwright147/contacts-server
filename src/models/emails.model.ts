@@ -1,7 +1,8 @@
+import path from 'path';
 import { Model } from 'objection';
 
-import { BaseModel } from './base.model';
 import { EmailModel } from '../types/email.interface';
+import { BaseModel } from './base.model';
 
 export class Emails extends BaseModel implements EmailModel {
   contactId;
@@ -12,7 +13,7 @@ export class Emails extends BaseModel implements EmailModel {
 
   static relationMappings = {
     contact: {
-      modelClass: __dirname + '/contacts.model',
+      modelClass: path.join(__dirname, 'contacts.model'),
       relation: Model.HasOneRelation,
       join: {
         from: 'emails.contactId',

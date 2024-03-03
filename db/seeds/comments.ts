@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker';
+import { fakerEN_GB as faker } from '@faker-js/faker';
 import dotenv from 'dotenv';
 import { Knex } from 'knex';
 import { CommentModel } from '../../src/types/comment.interface';
@@ -6,10 +6,9 @@ import { CommentModel } from '../../src/types/comment.interface';
 dotenv.config();
 
 faker.seed(1234567);
-faker.locale = 'en_GB';
 
 const TABLE_NAME = 'comments';
-const QUANTITY = process.env.QUANTITY ?? 10;
+const QUANTITY = Number(process.env.QUANTITY ?? 10);
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
@@ -20,8 +19,10 @@ export async function seed(knex: Knex): Promise<void> {
     seedData.push({
       contactId: index,
       comment: faker.lorem.sentences(2),
-      createdAt: knex.fn.now() as any,
-      updatedAt: knex.fn.now() as any,
+      // @ts-ignore
+      createdAt: knex.fn.now(),
+      // @ts-ignore
+      updatedAt: knex.fn.now(),
     });
   }
 
