@@ -63,10 +63,27 @@ APP.use(delay);
 APP.all('*', decodeAuthToken);
 
 APP.get('/api/v1/contacts', checkAuthToken, async (req, res) => {
+
+APP.get('/api/v1/contacts/birthdays', checkAuthToken, async (req, res) => {
+  try {
+    const result = await Contacts.query()
+      .select('id', 'firstName', 'lastName', 'isFavourite', 'dateOfBirth')
+      .orderBy([{ column: 'dateOfBirth' }])
+      // biome-ignore lint/complexity/useLiteralKeys: <explanation>
+      .where('ownerId', '=', req['decodedToken'].sub);
+    res.json(result);
+  } catch (err) {
+    console.info(err);
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+});
+
+APP.get('/api/v1/contacts/favourites', checkAuthToken, async (req, res) => {
   try {
     const result = await Contacts.query()
       .select('id', 'firstName', 'lastName', 'isFavourite', 'jobTitle')
       .orderBy([{ column: 'firstName' }, { column: 'lastName', order: 'asc' }])
+      .where('isFavourite', '1')
       // biome-ignore lint/complexity/useLiteralKeys: <explanation>
       .where('ownerId', '=', req['decodedToken'].sub);
     res.json(result);
