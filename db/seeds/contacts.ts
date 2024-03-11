@@ -9,6 +9,7 @@ faker.seed(1234567);
 
 const TABLE_NAME = 'contacts';
 const QUANTITY_CONTACTS = Number(process.env.QUANTITY_CONTACTS ?? 30);
+const oldestYear = Number(new Date().getFullYear()) - 1980;
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
@@ -27,7 +28,7 @@ export async function seed(knex: Knex): Promise<void> {
       lastName: LAST_NAME,
       jobTitle: faker.person.jobTitle(),
       bio: faker.lorem.paragraphs(faker.number.int(2) + 1),
-      dateOfBirth: faker.date.past({ years: 65, refDate: now }).toISOString().split('T')[0],
+      dateOfBirth: faker.date.past({ years: oldestYear, refDate: now }).toISOString().split('T')[0],
       ownerId: faker.number.int({ min: 1, max: 3 }),
       isFavourite: faker.datatype.boolean(),
       // @ts-ignore
