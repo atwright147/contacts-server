@@ -65,7 +65,7 @@ APP.all('*', decodeAuthToken);
 APP.get('/api/v1/contacts', checkAuthToken, async (req, res) => {
   try {
     const result = await Contacts.query()
-      .select('id', 'firstName', 'lastName', 'isFavourite', 'jobTitle')
+      .select('id', 'firstName', 'lastName', 'isFavourite', 'gender', 'jobTitle')
       .orderBy([{ column: 'isFavourite', order: 'desc' }, { column: 'firstName' }, { column: 'lastName', order: 'asc' }])
       // biome-ignore lint/complexity/useLiteralKeys: <explanation>
       .where('ownerId', '=', req['decodedToken'].sub);
